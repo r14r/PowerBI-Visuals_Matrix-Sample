@@ -1,5 +1,5 @@
 "use strict";
-import { select } from "d3-selection";
+import { select, Selection } from "d3-selection";
 import { formatPrefix } from "d3-format";
 
 /**/
@@ -48,6 +48,9 @@ export class Visual implements IVisual {
     options: VisualUpdateOptions,
     viewModel: VisualViewModel
   ): void {
+
+    var rootElement: Selection<HTMLDivElement, DataViewMatrixNode, any, any>;
+
     let matrix: DataViewMatrix = options.dataViews[0].matrix;
     if (!viewModel || !matrix) {
       return;
@@ -61,7 +64,8 @@ export class Visual implements IVisual {
 
     // create root node
     this.target.select(".root").remove();
-    let rootElement = this.target.selectAll("div.root");
+
+    rootElement = this.target.selectAll("div.root");
     console.log("updateInternal/HTML: rootElement", rootElement);
 
     let rootElementData = rootElement.data([root]);
