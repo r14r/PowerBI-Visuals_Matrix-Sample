@@ -15,11 +15,10 @@
   "dependencies": {
     "@types/d3": "5.5.0",
     "d3": "5.5.0",
-    "powerbi-visuals-api": "~3.8.0",
+    "powerbi-visuals-api": "~3.8.4",
     "powerbi-visuals-utils-dataviewutils": "2.4.1",
-    "webpack": "^5.0.0"
+    "webpack": "^5.73.0"
   },
-
   "devDependencies": {
     "ts-loader": "9.3.1",
     "tslint": "^5.20.1",
