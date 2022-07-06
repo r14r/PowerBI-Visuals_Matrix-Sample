@@ -2,13 +2,16 @@
 
 import powerbi from "powerbi-visuals-api";
 
+/**/
 import DataView = powerbi.DataView;
 import DataViewCategorical = powerbi.DataViewCategorical;
 import DataViewValueColumns = powerbi.DataViewValueColumns;
 import DataViewCategoryColumn = powerbi.DataViewCategoryColumn;
 
+/**/
 import { VisualViewModel } from "../model/visualViewModel";
 
+/**/
 export function visualTransform(dataViews: DataView[]): VisualViewModel {
     const viewModel: VisualViewModel = {
         categories: [],
@@ -17,10 +20,14 @@ export function visualTransform(dataViews: DataView[]): VisualViewModel {
     if (dataViews && dataViews[0]) {
         const dataView: DataView = dataViews[0];
         const categorical: DataViewCategorical = dataView.categorical;
+
+        console.log("visualTransform: dataView=", dataView, " categorial=", categorical);
+
         if (categorical) {
             const categories: DataViewCategoryColumn[] = categorical.categories;
             const series: DataViewValueColumns = categorical.values;
 
+            console.log("visualTransform: categories=", categories, " series=", series);
             if (categories && series && categories.length > 0 && series.length > 0) {
                 for (let i: number = 0, catLength: number = categories[0].values.length; i < catLength; i++) {
                     viewModel.categories.push({

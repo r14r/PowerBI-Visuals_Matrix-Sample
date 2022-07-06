@@ -1,20 +1,20 @@
 {
     "dataRoles": [
         {
-            "name": "Category",
-            "displayName": "Category",
+            "name": "rows",
+            "displayName": "Rows",
             "displayNameKey": "Visual_Category",
             "kind": "Grouping"
         },
         {
-            "name": "Column",
-            "displayName": "Column",
+            "name": "columns",
+            "displayName": "Columns",
             "displayNameKey": "Visual_Column",
             "kind": "Grouping"
         },
         {
-            "name": "Measure",
-            "displayName": "Measure",
+            "name": "values",
+            "displayName": "Values",
             "displayNameKey": "Visual_Values",
             "kind": "Measure"
         }
@@ -24,19 +24,19 @@
             "matrix": {
                 "rows": {
                     "for": {
-                        "in": "Category"
+                        "in": "rows"
                     }
                 },
                 "columns": {
                     "for": {
-                        "in": "Column"
+                        "in": "columns"
                     }
                 },
                 "values": {
                     "select": [
                         {
                             "for": {
-                                "in": "Measure"
+                                "in": "values"
                             }
                         }
                     ]

@@ -2,8 +2,10 @@
 import { select } from "d3-selection";
 import { formatPrefix } from "d3-format";
 
+/**/
 import powerbi from "powerbi-visuals-api";
 
+/**/
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
@@ -13,14 +15,18 @@ import DataView = powerbi.DataView;
 import IViewport = powerbi.IViewport;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
 
-import { VisualSettings } from "./settings";
+/**/
+import { VisualSettings } from "./settings/settings";
+
+/**/
 import { VisualViewModel, CategoryViewModel } from "./model/visualViewModel";
 import { visualTransform } from "./utilities/visualTransform";
 
+/**/
 import DataViewMatrix = powerbi.DataViewMatrix;
 import DataViewMatrixNode = powerbi.DataViewMatrixNode;
 
-("use strict");
+/**/
 export class Visual implements IVisual {
   private target: d3.Selection<any, any, any, any>;
   private table: d3.Selection<any, any, any, any>;
@@ -47,13 +53,20 @@ export class Visual implements IVisual {
       return;
     }
 
+    console.log("updateInternal/DATA: matrix:", matrix);
+
     this.settings = Visual.parseSettings(options.dataViews[0]);
     let root: DataViewMatrixNode = matrix.rows.root;
+    console.log("updateInternal/DATA: root:", root);
 
     // create root node
     this.target.select(".root").remove();
     let rootElement = this.target.selectAll("div.root");
+    console.log("updateInternal/HTML: rootElement", rootElement);
+
     let rootElementData = rootElement.data([root]);
+    console.log("updateInternal/HTML: rootElementData", rootElementData);
+
     rootElementData.exit().remove();
 
     let rootElementMerged = rootElementData
@@ -65,9 +78,15 @@ export class Visual implements IVisual {
     this.treeWalker(this.target.select("div.root"), root.children);
   }
 
-  private treeWalker(parent, data) {
+  private treeWalker(parent, data, level=0) {
+    console.log(`treeWalker: level=${level} parent=`, parent, ` data=`, data)
+
     let childrenElements = parent.selectAll("div.child");
+    console.log("treeWalker/HTML: childrenElements", childrenElements);
+
     let childrenElementsData = childrenElements.data(data);
+    console.log("treeWalker/HTML: childrenElementsData", childrenElementsData);
+
     childrenElementsData.exit().remove();
 
     let childrenElementsMerged = childrenElementsData
@@ -85,7 +104,7 @@ export class Visual implements IVisual {
     childrenElementsMerged.nodes().forEach((node, index) => {
       if (data[index].children) {
         // draw child
-        this.treeWalker(select(node), data[index].children);
+        this.treeWalker(select(node), data[index].children, level+1);
       } else {
         // draw values
         let valuesElementsData = select(node)
@@ -99,6 +118,8 @@ export class Visual implements IVisual {
           .append("text")
           .classed("values", true)
           .text((data) => ` ${(<any>data).value} #|`);
+
+        console.log("treeWalker/HTML: valuesElementsData", valuesElementsData);
       }
     });
   }
